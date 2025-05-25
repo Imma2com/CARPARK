@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Typography, Box } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import {
 	LineChart,
@@ -11,7 +11,7 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 
-// Fake chart data
+// Sample data
 const data = [
 	{ name: "Mon", parked: 20 },
 	{ name: "Tue", parked: 45 },
@@ -22,45 +22,58 @@ const data = [
 	{ name: "Sun", parked: 90 },
 ];
 
-// Styled summary card
+// Styled card
 const SummaryCard = styled(Paper)(({ theme }) => ({
-	backgroundColor: "#0b3558", // dark blue
+	backgroundColor: "#0b3558",
 	color: "#fff",
-	padding: theme.spacing(3),
+	padding: theme.spacing(2),
+	flex: "1 1 200px", // responsive grow
+	borderRadius: 8,
+	border: "1px solid #1e3a5f",
+	boxShadow: "none",
 	textAlign: "center",
-	height: "100%",
-	borderRadius: 12,
+	minWidth: 180,
+}));
+
+// Section box with light border
+const Section = styled(Box)(({ theme }) => ({
+	border: "1px solid #e0e0e0",
+	borderRadius: 8,
+	padding: theme.spacing(2),
+	marginBottom: theme.spacing(4),
 }));
 
 function Dashboard() {
+	const summaryItems = [
+		{ title: "Total Parked Cars", value: 128 },
+		{ title: "Available Slots", value: 72 },
+		{ title: "Total Revenue", value: "$4,560" },
+		{ title: "Parking Areas", value: 5 },
+	];
+
 	return (
-		<Box sx={{ p: 3 }}>
+		<Box sx={{ p: { xs: 2, md: 4 } }}>
 			{/* Summary Cards */}
-			<Grid container spacing={3}>
-				{[
-					{ title: "Total Parked Cars", value: 128 },
-					{ title: "Available Slots", value: 72 },
-					{ title: "Total Revenue", value: "$4,560" },
-					{ title: "Parking Areas", value: 5 },
-				].map((item, index) => (
-					<Grid key={index} item xs={12} sm={6} md={3}>
-						<SummaryCard elevation={4}>
-							<Typography variant="subtitle1" gutterBottom>
-								{item.title}
-							</Typography>
-							<Typography variant="h4" fontWeight="bold">
-								{item.value}
-							</Typography>
-						</SummaryCard>
-					</Grid>
+			<Box
+				display="flex"
+				flexWrap="wrap"
+				gap={2}
+				justifyContent="space-between"
+				mb={4}>
+				{summaryItems.map((item, index) => (
+					<SummaryCard key={index}>
+						<Typography variant="subtitle2" gutterBottom>
+							{item.title}
+						</Typography>
+						<Typography variant="h5" fontWeight="bold">
+							{item.value}
+						</Typography>
+					</SummaryCard>
 				))}
-			</Grid>
+			</Box>
 
-			{/* Spacer */}
-			<Box my={4} />
-
-			{/* Parking Activity Chart */}
-			<Paper elevation={4} sx={{ p: 3, borderRadius: 3 }}>
+			{/* Chart Section */}
+			<Section>
 				<Typography variant="h6" mb={2}>
 					Parking Activity (This Week)
 				</Typography>
@@ -78,13 +91,10 @@ function Dashboard() {
 						/>
 					</LineChart>
 				</ResponsiveContainer>
-			</Paper>
+			</Section>
 
-			{/* Spacer */}
-			<Box my={4} />
-
-			{/* Recent Parked Cars Placeholder */}
-			<Paper elevation={4} sx={{ p: 3, borderRadius: 3 }}>
+			{/* Placeholder for Recent Parked Cars */}
+			<Section>
 				<Typography variant="h6" mb={2}>
 					Recent Parked Cars
 				</Typography>
@@ -92,17 +102,17 @@ function Dashboard() {
 					sx={{
 						width: "100%",
 						height: 200,
-						backgroundColor: "#f5f5f5",
+						backgroundColor: "#f9f9f9",
 						display: "flex",
 						justifyContent: "center",
 						alignItems: "center",
-						color: "#888",
+						color: "#999",
 						fontStyle: "italic",
-						borderRadius: 2,
+						borderRadius: 4,
 					}}>
 					[ Table coming soon... ]
 				</Box>
-			</Paper>
+			</Section>
 		</Box>
 	);
 }
