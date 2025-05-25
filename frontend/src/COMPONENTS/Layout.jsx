@@ -42,7 +42,8 @@ export default function Layout() {
 		],
 		Settings: [
 			{ label: "Add Parking Area", path: "/settings/add-area" },
-			{ label: "Park Area", path: "/settings/park-area" },
+			{ label: "Park Area", path: "/settings/park-area-list" },
+			{ label: "Parked Car", path: "/settings/park-area" },
 		],
 	};
 

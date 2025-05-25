@@ -10,6 +10,7 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 } from "recharts";
+import ParkedCars from "./PARKING/ParkedCars";
 
 // Sample data
 const data = [
@@ -101,7 +102,6 @@ function Dashboard() {
 				<Box
 					sx={{
 						width: "100%",
-						height: 200,
 						backgroundColor: "#f9f9f9",
 						display: "flex",
 						justifyContent: "center",
@@ -110,7 +110,7 @@ function Dashboard() {
 						fontStyle: "italic",
 						borderRadius: 4,
 					}}>
-					[ Table coming soon... ]
+					<ParkedCars />
 				</Box>
 			</Section>
 		</Box>

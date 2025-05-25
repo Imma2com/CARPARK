@@ -9,7 +9,6 @@ import {
 	TablePagination,
 	Paper,
 	Box,
-	Typography,
 } from "@mui/material";
 
 const sampleData = [
@@ -29,15 +28,16 @@ export default function ParkedCars() {
 	const handleChangePage = (event, newPage) => setPage(newPage);
 
 	return (
-		<Box p={2}>
-			<Typography variant="h6" gutterBottom>
-				Recently Parked Cars
-			</Typography>
-
+		<Box p={2} sx={{ width: "100%" }}>
 			<TableContainer
 				component={Paper}
-				sx={{ border: "1px solid #ccc", boxShadow: "none" }}>
-				<Table>
+				sx={{
+					width: "100%",
+					overflowX: "auto",
+					border: "1px solid #ccc",
+					boxShadow: "none",
+				}}>
+				<Table sx={{ minWidth: 600 }}>
 					<TableHead>
 						<TableRow sx={{ backgroundColor: "#f0f0f0" }}>
 							<TableCell>ID</TableCell>

@@ -6,6 +6,7 @@ import AddArea from "./COMPONENTS/PARKING/AddArea";
 import Dashboard from "./COMPONENTS/Dashboard";
 import ParkedCars from "./COMPONENTS/PARKING/ParkedCars";
 import ParkCar from "./COMPONENTS/PARKING/ParkCar";
+import ParkArea from "./COMPONENTS/PARKING/ParkArea";
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 					<Route path="vehicles/list" element={<VehicleList />} />
 					<Route path="settings/add-area" element={<AddArea />} />
 					<Route path="settings/park-area" element={<ParkedCars />} />
+					<Route path="settings/park-area-list" element={<ParkArea />} />
 					<Route index element={<Dashboard />} />
 				</Route>
 			</Routes>
