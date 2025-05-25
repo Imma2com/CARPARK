@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Paper,
@@ -11,19 +11,28 @@ import {
 	TablePagination,
 	Typography,
 } from "@mui/material";
-
-const mockData = Array.from({ length: 25 }).map((_, i) => ({
-	id: i + 1,
-	name: `Area ${i + 1}`,
-	capacity: Math.floor(Math.random() * 100) + 10,
-	description: `Description for Area ${i + 1}`,
-}));
+import axios from "axios";
 
 function ParkArea() {
+	const [areas, setAreas] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
+	useEffect(() => {
+		const fetchAreas = async () => {
+			try {
+				const res = await axios.get("http://localhost:5000/api/park-areas");
+				setAreas(res.data); // assuming API returns an array of park areas
+			} catch (err) {
+				console.error("Error fetching park areas:", err);
+			}
+		};
+
+		fetchAreas();
+	}, []);
+
 	const handleChangePage = (event, newPage) => setPage(newPage);
+
 	const handleChangeRowsPerPage = (event) => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 		setPage(0);
@@ -63,14 +72,14 @@ function ParkArea() {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{mockData
+							{areas
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((row) => (
-									<TableRow key={row.id} hover>
-										<TableCell>{row.id}</TableCell>
-										<TableCell>{row.name}</TableCell>
-										<TableCell>{row.capacity}</TableCell>
-										<TableCell>{row.description}</TableCell>
+								.map((area, index) => (
+									<TableRow key={area._id || index} hover>
+										<TableCell>{page * rowsPerPage + index + 1}</TableCell>
+										<TableCell>{area.areaName}</TableCell>
+										<TableCell>{area.capacity}</TableCell>
+										<TableCell>{area.description}</TableCell>
 									</TableRow>
 								))}
 						</TableBody>
@@ -80,7 +89,7 @@ function ParkArea() {
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 15]}
 					component="div"
-					count={mockData.length}
+					count={areas.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}
