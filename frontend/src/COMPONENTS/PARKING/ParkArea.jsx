@@ -31,7 +31,7 @@ function ParkArea() {
 
 	return (
 		<Box sx={{ p: 3, width: "100%" }}>
-			<Typography variant="h5" mb={2}>
+			<Typography variant="h5" mb={2} sx={{ color: "#003366" }}>
 				Parking Areas
 			</Typography>
 
@@ -41,15 +41,25 @@ function ParkArea() {
 					overflow: "hidden",
 					border: "1px solid #ccc",
 					boxShadow: "none",
+					borderRadius: 2,
+					backgroundColor: "#fafafa",
 				}}>
 				<TableContainer>
 					<Table stickyHeader>
 						<TableHead>
-							<TableRow>
-								<TableCell>ID</TableCell>
-								<TableCell>Area Name</TableCell>
-								<TableCell>Capacity</TableCell>
-								<TableCell>Description</TableCell>
+							<TableRow sx={{ backgroundColor: "#f0f0f0" }}>
+								<TableCell sx={{ fontWeight: "bold", color: "#222" }}>
+									ID
+								</TableCell>
+								<TableCell sx={{ fontWeight: "bold", color: "#222" }}>
+									Area Name
+								</TableCell>
+								<TableCell sx={{ fontWeight: "bold", color: "#222" }}>
+									Capacity
+								</TableCell>
+								<TableCell sx={{ fontWeight: "bold", color: "#222" }}>
+									Description
+								</TableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
@@ -75,6 +85,16 @@ function ParkArea() {
 					page={page}
 					onPageChange={handleChangePage}
 					onRowsPerPageChange={handleChangeRowsPerPage}
+					sx={{
+						"& .MuiTablePagination-toolbar": {
+							bgcolor: "#fafafa",
+							borderTop: "1px solid #ccc",
+							color: "#003366",
+						},
+						"& .MuiTablePagination-actions button": {
+							color: "#003366",
+						},
+					}}
 				/>
 			</Paper>
 		</Box>

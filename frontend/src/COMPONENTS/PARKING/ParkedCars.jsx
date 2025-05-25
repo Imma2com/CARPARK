@@ -34,16 +34,25 @@ export default function ParkedCars() {
 				sx={{
 					width: "100%",
 					overflowX: "auto",
-					border: "1px solid #ccc",
+					border: "1px solid #003366", // dark blue border
 					boxShadow: "none",
+					borderRadius: 2,
 				}}>
 				<Table sx={{ minWidth: 600 }}>
 					<TableHead>
-						<TableRow sx={{ backgroundColor: "#f0f0f0" }}>
-							<TableCell>ID</TableCell>
-							<TableCell>Plate Number</TableCell>
-							<TableCell>Owner</TableCell>
-							<TableCell>Parked Time</TableCell>
+						<TableRow sx={{ backgroundColor: "#003366" }}>
+							<TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+								ID
+							</TableCell>
+							<TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+								Plate Number
+							</TableCell>
+							<TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+								Owner
+							</TableCell>
+							<TableCell sx={{ color: "#fff", fontWeight: "bold" }}>
+								Parked Time
+							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -66,6 +75,16 @@ export default function ParkedCars() {
 					onPageChange={handleChangePage}
 					rowsPerPage={rowsPerPage}
 					rowsPerPageOptions={[]}
+					sx={{
+						"& .MuiTablePagination-toolbar": {
+							bgcolor: "#f0f0f0",
+							borderTop: "1px solid #003366",
+							color: "#003366",
+						},
+						"& .MuiTablePagination-actions button": {
+							color: "#003366",
+						},
+					}}
 				/>
 			</TableContainer>
 		</Box>

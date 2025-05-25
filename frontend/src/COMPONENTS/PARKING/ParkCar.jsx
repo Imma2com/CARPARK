@@ -1,7 +1,132 @@
-import React from "react";
+import React, { useState } from "react";
+import { Box, Grid, TextField, Button, Typography, Paper } from "@mui/material";
 
-function ParkCar() {
-	return <div></div>;
+export default function ParkCar() {
+	const [formData, setFormData] = useState({
+		vehicleType: "",
+		plateNumber: "",
+		ownerName: "",
+		contact: "",
+		description: "",
+	});
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({ ...prev, [name]: value }));
+	};
+
+	const handleClear = () => {
+		setFormData({
+			vehicleType: "",
+			plateNumber: "",
+			ownerName: "",
+			contact: "",
+			description: "",
+		});
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		// Here you can add your submit logic
+		console.log("Parked Car Data:", formData);
+	};
+
+	return (
+		<Box sx={{ width: "100%", p: 3 }}>
+			<Typography variant="h5" mb={3} sx={{ color: "#003366" }}>
+				Park a Car
+			</Typography>
+
+			<Paper
+				component="form"
+				onSubmit={handleSubmit}
+				sx={{
+					p: 3,
+					border: "1px solid #ccc",
+					borderRadius: 2,
+					boxShadow: "none",
+					backgroundColor: "#f9f9f9",
+				}}>
+				{/* Top row with 4 columns */}
+				<Grid container spacing={2} mb={2}>
+					<Grid item xs={12} sm={6} md={3}>
+						<TextField
+							fullWidth
+							label="Vehicle Type"
+							name="vehicleType"
+							value={formData.vehicleType}
+							onChange={handleChange}
+							required
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={3}>
+						<TextField
+							fullWidth
+							label="Plate Number"
+							name="plateNumber"
+							value={formData.plateNumber}
+							onChange={handleChange}
+							required
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={3}>
+						<TextField
+							fullWidth
+							label="Owner Name"
+							name="ownerName"
+							value={formData.ownerName}
+							onChange={handleChange}
+							required
+						/>
+					</Grid>
+					<Grid item xs={12} sm={6} md={3}>
+						<TextField
+							fullWidth
+							label="Contact"
+							name="contact"
+							value={formData.contact}
+							onChange={handleChange}
+							required
+						/>
+					</Grid>
+				</Grid>
+
+				{/* Description full width */}
+				<Box mb={3}>
+					<TextField
+						fullWidth
+						multiline
+						rows={4}
+						label="Description"
+						name="description"
+						value={formData.description}
+						onChange={handleChange}
+					/>
+				</Box>
+
+				{/* Buttons: Clear (left), Park Car (right) */}
+				<Grid container justifyContent="space-between">
+					<Grid item>
+						<Button
+							variant="outlined"
+							onClick={handleClear}
+							sx={{ color: "#003366", borderColor: "#003366" }}>
+							Clear
+						</Button>
+					</Grid>
+					<Grid item>
+						<Button
+							type="submit"
+							variant="contained"
+							sx={{
+								backgroundColor: "#003366",
+								"&:hover": { backgroundColor: "#002244" },
+							}}>
+							Park Car
+						</Button>
+					</Grid>
+				</Grid>
+			</Paper>
+		</Box>
+	);
 }
-
-export default ParkCar;
