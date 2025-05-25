@@ -7,12 +7,14 @@ import Dashboard from "./COMPONENTS/Dashboard";
 import ParkedCars from "./COMPONENTS/PARKING/ParkedCars";
 import ParkCar from "./COMPONENTS/PARKING/ParkCar";
 import ParkArea from "./COMPONENTS/PARKING/ParkArea";
+import Login from "./COMPONENTS/Login";
 
 function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="/" element={<Layout />}>
+				<Route path="/" element={<Login />} />
+				<Route path="/Home" element={<Layout />}>
 					<Route path="dashboard" element={<Dashboard />} />
 					<Route path="parkcar" element={<ParkCar />} />
 					<Route path="vehicles/add" element={<AddVehicle />} />

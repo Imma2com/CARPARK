@@ -15,6 +15,7 @@ import {
 	Box,
 } from "@mui/material";
 import { ExpandLess, ExpandMore, Menu as MenuIcon } from "@mui/icons-material";
+import TopBar from "./TopBar";
 
 const drawerWidth = 240;
 
@@ -28,7 +29,11 @@ export default function Layout() {
 		setMobileOpen(!mobileOpen);
 	};
 
-	const isActive = (path) => location.pathname.startsWith(path);
+	// Base path of nested routes
+	const basePath = "/Home";
+
+	// Check if current path starts with basePath + menu path
+	const isActive = (path) => location.pathname.startsWith(basePath + path);
 
 	const menuItems = [
 		{ label: "Dashboard", path: "/dashboard" },
@@ -57,7 +62,7 @@ export default function Layout() {
 					<ListItem key={item.path} disablePadding>
 						<ListItemButton
 							component={Link}
-							to={item.path}
+							to={basePath + item.path}
 							selected={isActive(item.path)}
 							sx={{ color: "white", "&.Mui-selected": { bgcolor: "#1b263b" } }}>
 							<ListItemText primary={item.label} />
@@ -78,7 +83,7 @@ export default function Layout() {
 							<ListItemButton
 								key={sub.path}
 								component={Link}
-								to={sub.path}
+								to={basePath + sub.path}
 								sx={{
 									pl: 4,
 									color: "white",
@@ -104,7 +109,7 @@ export default function Layout() {
 							<ListItemButton
 								key={sub.path}
 								component={Link}
-								to={sub.path}
+								to={basePath + sub.path}
 								sx={{
 									pl: 4,
 									color: "white",
@@ -135,6 +140,7 @@ export default function Layout() {
 					<Typography variant="h6" noWrap>
 						Car Parking System
 					</Typography>
+					<TopBar />
 				</Toolbar>
 			</AppBar>
 
