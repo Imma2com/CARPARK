@@ -1,234 +1,183 @@
-import React, { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+// src/COMPONENTS/Layout.jsx
+import { useState } from "react";
+import { Outlet, useLocation, Link } from "react-router-dom";
+import {
+	Drawer,
+	List,
+	ListItem,
+	ListItemText,
+	ListItemButton,
+	Collapse,
+	AppBar,
+	Toolbar,
+	Typography,
+	IconButton,
+	Box,
+} from "@mui/material";
+import { ExpandLess, ExpandMore, Menu as MenuIcon } from "@mui/icons-material";
 
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import Toolbar from "@mui/material/Toolbar";
-import Divider from "@mui/material/Divider";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-
-import TopBar from "./TopBar";
-
-const drawerWidth = 260;
+const drawerWidth = 240;
 
 export default function Layout() {
+	const [openVehicle, setOpenVehicle] = useState(false);
+	const [openSettings, setOpenSettings] = useState(false);
 	const [mobileOpen, setMobileOpen] = useState(false);
-	const [openMenus, setOpenMenus] = useState({
-		vehicle: false,
-		settings: false,
-	});
-
 	const location = useLocation();
 
-	const toggleMenu = (menu) => {
-		setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
-	};
-
-	const handleDrawerToggle = () => {
+	const toggleDrawer = () => {
 		setMobileOpen(!mobileOpen);
 	};
 
 	const isActive = (path) => location.pathname.startsWith(path);
 
-	const drawer = (
-		<div style={{ height: "100%", backgroundColor: "#1565C0", color: "white" }}>
-			<Toolbar />
-			<Divider sx={{ bgcolor: "rgba(255,255,255,0.2)" }} />
+	const menuItems = [
+		{ label: "Dashboard", path: "/dashboard" },
+		{ label: "Park Car", path: "/parkcar" },
+	];
 
-			<List component="nav" disablePadding>
-				<ListItemButton
-					component={Link}
-					to="/dashboard"
-					selected={isActive("/dashboard")}
-					sx={{
-						color: "white",
-						"&.Mui-selected": {
-							bgcolor: "#0D47A1",
-						},
-						"&:hover": {
-							bgcolor: "#0D47A1",
-						},
-					}}>
-					<ListItemText primary="Dashboard" />
-				</ListItemButton>
+	const subMenus = {
+		Vehicle: [
+			{ label: "Add Vehicle", path: "/vehicles/add" },
+			{ label: "Vehicle List", path: "/vehicles/list" },
+		],
+		Settings: [
+			{ label: "Add Parking Area", path: "/settings/add-area" },
+			{ label: "Park Area", path: "/settings/park-area" },
+		],
+	};
 
-				<ListItemButton
-					component={Link}
-					to="/parkcar"
-					selected={isActive("/parkcar")}
-					sx={{
-						color: "white",
-						"&.Mui-selected": {
-							bgcolor: "#0D47A1",
-						},
-						"&:hover": {
-							bgcolor: "#0D47A1",
-						},
-					}}>
-					<ListItemText primary="Park Car" />
-				</ListItemButton>
+	const drawerContent = (
+		<Box sx={{ bgcolor: "#0d1b2a", height: "100%", color: "white" }}>
+			<Typography variant="h6" sx={{ p: 2, fontWeight: "bold" }}>
+				Car Park System
+			</Typography>
+			<List>
+				{menuItems.map((item) => (
+					<ListItem key={item.path} disablePadding>
+						<ListItemButton
+							component={Link}
+							to={item.path}
+							selected={isActive(item.path)}
+							sx={{ color: "white", "&.Mui-selected": { bgcolor: "#1b263b" } }}>
+							<ListItemText primary={item.label} />
+						</ListItemButton>
+					</ListItem>
+				))}
 
-				{/* Vehicle submenu */}
+				{/* Vehicle Submenu */}
 				<ListItemButton
-					onClick={() => toggleMenu("vehicle")}
-					sx={{
-						color: "white",
-						justifyContent: "space-between",
-						"&:hover": {
-							bgcolor: "#0D47A1",
-						},
-					}}>
+					onClick={() => setOpenVehicle(!openVehicle)}
+					sx={{ color: "white" }}>
 					<ListItemText primary="Vehicle" />
-					{openMenus.vehicle ? <ExpandLess /> : <ExpandMore />}
+					{openVehicle ? <ExpandLess /> : <ExpandMore />}
 				</ListItemButton>
-				<Collapse in={openMenus.vehicle} timeout="auto" unmountOnExit>
+				<Collapse in={openVehicle} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<ListItemButton
-							component={Link}
-							to="/vehicles/add"
-							selected={isActive("/vehicles/add")}
-							sx={{
-								pl: 4,
-								color: "white",
-								"&.Mui-selected": {
-									bgcolor: "#0D47A1",
-								},
-								"&:hover": {
-									bgcolor: "#0D47A1",
-								},
-							}}>
-							<ListItemText primary="Add Vehicle" />
-						</ListItemButton>
-						<ListItemButton
-							component={Link}
-							to="/vehicles/list"
-							selected={isActive("/vehicles/list")}
-							sx={{
-								pl: 4,
-								color: "white",
-								"&.Mui-selected": {
-									bgcolor: "#0D47A1",
-								},
-								"&:hover": {
-									bgcolor: "#0D47A1",
-								},
-							}}>
-							<ListItemText primary="Vehicle List" />
-						</ListItemButton>
+						{subMenus.Vehicle.map((sub) => (
+							<ListItemButton
+								key={sub.path}
+								component={Link}
+								to={sub.path}
+								sx={{
+									pl: 4,
+									color: "white",
+									"&.Mui-selected": { bgcolor: "#1b263b" },
+								}}
+								selected={isActive(sub.path)}>
+								<ListItemText primary={sub.label} />
+							</ListItemButton>
+						))}
 					</List>
 				</Collapse>
 
-				{/* Settings submenu */}
+				{/* Settings Submenu */}
 				<ListItemButton
-					onClick={() => toggleMenu("settings")}
-					sx={{
-						color: "white",
-						justifyContent: "space-between",
-						"&:hover": {
-							bgcolor: "#0D47A1",
-						},
-					}}>
+					onClick={() => setOpenSettings(!openSettings)}
+					sx={{ color: "white" }}>
 					<ListItemText primary="Parking Settings" />
-					{openMenus.settings ? <ExpandLess /> : <ExpandMore />}
+					{openSettings ? <ExpandLess /> : <ExpandMore />}
 				</ListItemButton>
-				<Collapse in={openMenus.settings} timeout="auto" unmountOnExit>
+				<Collapse in={openSettings} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<ListItemButton
-							component={Link}
-							to="/settings/add-area"
-							selected={isActive("/settings/add-area")}
-							sx={{
-								pl: 4,
-								color: "white",
-								"&.Mui-selected": {
-									bgcolor: "#0D47A1",
-								},
-								"&:hover": {
-									bgcolor: "#0D47A1",
-								},
-							}}>
-							<ListItemText primary="Add Parking Area" />
-						</ListItemButton>
-						<ListItemButton
-							component={Link}
-							to="/settings/park-area"
-							selected={isActive("/settings/park-area")}
-							sx={{
-								pl: 4,
-								color: "white",
-								"&.Mui-selected": {
-									bgcolor: "#0D47A1",
-								},
-								"&:hover": {
-									bgcolor: "#0D47A1",
-								},
-							}}>
-							<ListItemText primary="Park Area" />
-						</ListItemButton>
+						{subMenus.Settings.map((sub) => (
+							<ListItemButton
+								key={sub.path}
+								component={Link}
+								to={sub.path}
+								sx={{
+									pl: 4,
+									color: "white",
+									"&.Mui-selected": { bgcolor: "#1b263b" },
+								}}
+								selected={isActive(sub.path)}>
+								<ListItemText primary={sub.label} />
+							</ListItemButton>
+						))}
 					</List>
 				</Collapse>
 			</List>
-		</div>
+		</Box>
 	);
 
 	return (
-		<Box sx={{ display: "flex", height: "100vh" }}>
-			<CssBaseline />
-			<TopBar onMenuClick={handleDrawerToggle} />
+		<Box sx={{ display: "flex" }}>
+			{/* Top Bar */}
+			<AppBar position="fixed" sx={{ zIndex: 1300, bgcolor: "#1b263b" }}>
+				<Toolbar>
+					<IconButton
+						color="inherit"
+						edge="start"
+						onClick={toggleDrawer}
+						sx={{ mr: 2, display: { md: "none" } }}>
+						<MenuIcon />
+					</IconButton>
+					<Typography variant="h6" noWrap>
+						Car Parking System
+					</Typography>
+				</Toolbar>
+			</AppBar>
 
-			{/* Drawer for desktop */}
-			<Drawer
-				variant="permanent"
-				sx={{
-					display: { xs: "none", md: "block" },
-					"& .MuiDrawer-paper": {
-						boxSizing: "border-box",
-						width: drawerWidth,
-						bgcolor: "#1565C0",
-						color: "white",
-					},
-				}}
-				open>
-				{drawer}
-			</Drawer>
+			{/* Sidebar */}
+			<Box
+				component="nav"
+				sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+				aria-label="menu folders">
+				<Drawer
+					variant="temporary"
+					open={mobileOpen}
+					onClose={toggleDrawer}
+					ModalProps={{ keepMounted: true }}
+					sx={{
+						display: { xs: "block", md: "none" },
+						"& .MuiDrawer-paper": {
+							width: drawerWidth,
+							boxSizing: "border-box",
+							bgcolor: "#0d1b2a",
+						},
+					}}>
+					{drawerContent}
+				</Drawer>
 
-			{/* Drawer for mobile */}
-			<Drawer
-				variant="temporary"
-				open={mobileOpen}
-				onClose={handleDrawerToggle}
-				ModalProps={{
-					keepMounted: true,
-				}}
-				sx={{
-					display: { xs: "block", md: "none" },
-					"& .MuiDrawer-paper": {
-						boxSizing: "border-box",
-						width: drawerWidth,
-						bgcolor: "#1565C0",
-						color: "white",
-					},
-				}}>
-				{drawer}
-			</Drawer>
+				<Drawer
+					variant="permanent"
+					sx={{
+						display: { xs: "none", md: "block" },
+						"& .MuiDrawer-paper": {
+							width: drawerWidth,
+							boxSizing: "border-box",
+							bgcolor: "#0d1b2a",
+						},
+					}}
+					open>
+					{drawerContent}
+				</Drawer>
+			</Box>
 
-			{/* Main content */}
+			{/* Content */}
 			<Box
 				component="main"
-				sx={{
-					flexGrow: 1,
-					bgcolor: "#E3F2FD",
-					p: 3,
-					width: { md: `calc(100% - ${drawerWidth}px)` },
-					marginTop: "64px", // height of appbar
-					overflowY: "auto",
-				}}>
+				sx={{ flexGrow: 1, bgcolor: "#f0f4f8", p: 3, minHeight: "100vh" }}>
+				<Toolbar /> {/* for spacing under AppBar */}
 				<Outlet />
 			</Box>
 		</Box>
