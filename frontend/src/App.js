@@ -6,7 +6,6 @@ import VehicleList from "./COMPONENTS/VEHICLE/VehicleList";
 import AddArea from "./COMPONENTS/PARKING/AddArea";
 import ParkArea from "./COMPONENTS/PARKING/ParkArea";
 import Dashboard from "./COMPONENTS/Dashboard";
-import "./index.css";
 
 function App() {
 	return (
