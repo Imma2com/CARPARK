@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Table,
 	TableBody,
@@ -9,23 +9,58 @@ import {
 	TablePagination,
 	Paper,
 	Box,
+	CircularProgress,
+	Typography,
 } from "@mui/material";
 
-const sampleData = [
-	{ id: 1, plate: "ABC-1234", owner: "John Doe", time: "10:30 AM" },
-	{ id: 2, plate: "XYZ-5678", owner: "Jane Smith", time: "11:15 AM" },
-	{ id: 3, plate: "LMN-4321", owner: "Alice Green", time: "12:00 PM" },
-	{ id: 4, plate: "QWE-9876", owner: "Bob Brown", time: "1:20 PM" },
-	{ id: 5, plate: "TYU-1233", owner: "Sara Connor", time: "2:45 PM" },
-	{ id: 6, plate: "POI-7890", owner: "Mike Ross", time: "3:00 PM" },
-	{ id: 7, plate: "ZXC-4567", owner: "Harvey Specter", time: "3:30 PM" },
-];
-
 export default function ParkedCars() {
+	const [cars, setCars] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+
 	const [page, setPage] = useState(0);
 	const rowsPerPage = 5;
 
+	const fetchParkedCars = async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const response = await fetch(
+				"http://localhost:5000/api/parking/parked-cars"
+			);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			const data = await response.json();
+			setCars(data);
+		} catch (err) {
+			setError(err.message || "Failed to fetch parked cars");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		fetchParkedCars();
+	}, []);
+
 	const handleChangePage = (event, newPage) => setPage(newPage);
+
+	if (loading) {
+		return (
+			<Box p={2} textAlign="center">
+				<CircularProgress />
+			</Box>
+		);
+	}
+
+	if (error) {
+		return (
+			<Box p={2} textAlign="center">
+				<Typography color="error">{error}</Typography>
+			</Box>
+		);
+	}
 
 	return (
 		<Box p={2} sx={{ width: "100%" }}>
@@ -34,7 +69,7 @@ export default function ParkedCars() {
 				sx={{
 					width: "100%",
 					overflowX: "auto",
-					border: "1px solid #003366", // dark blue border
+					border: "1px solid #003366",
 					boxShadow: "none",
 					borderRadius: 2,
 				}}>
@@ -56,21 +91,23 @@ export default function ParkedCars() {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{sampleData
+						{cars
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map((car) => (
-								<TableRow key={car.id} hover>
-									<TableCell>{car.id}</TableCell>
-									<TableCell>{car.plate}</TableCell>
-									<TableCell>{car.owner}</TableCell>
-									<TableCell>{car.time}</TableCell>
+							.map((car, i) => (
+								<TableRow key={i} hover>
+									<TableCell>{i + 1}</TableCell>
+									<TableCell>{car.plateNumber}</TableCell>
+									<TableCell>{car.ownerName}</TableCell>
+									<TableCell>
+										{new Date(car.parkedAt).toLocaleString()}
+									</TableCell>
 								</TableRow>
 							))}
 					</TableBody>
 				</Table>
 				<TablePagination
 					component="div"
-					count={sampleData.length}
+					count={cars.length}
 					page={page}
 					onPageChange={handleChangePage}
 					rowsPerPage={rowsPerPage}

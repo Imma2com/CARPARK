@@ -25,10 +25,27 @@ export default function AddVehicle() {
 		});
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("Submitted:", formData);
-		// Implement your save logic here
+
+		try {
+			const res = await fetch("http://localhost:5000/api/vehicles", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(formData),
+			});
+
+			if (res.ok) {
+				handleClear();
+				alert("Vehicle added successfully!");
+			} else {
+				const err = await res.json();
+				alert("Failed to add vehicle: " + err.message);
+			}
+		} catch (error) {
+			console.error("Error submitting vehicle:", error);
+			alert("Error submitting vehicle");
+		}
 	};
 
 	return (

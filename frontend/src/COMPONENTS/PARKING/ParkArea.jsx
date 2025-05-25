@@ -22,7 +22,7 @@ function ParkArea() {
 		const fetchAreas = async () => {
 			try {
 				const res = await axios.get("http://localhost:5000/api/park-areas");
-				setAreas(res.data); // assuming API returns an array of park areas
+				setAreas(res.data);
 			} catch (err) {
 				console.error("Error fetching park areas:", err);
 			}
